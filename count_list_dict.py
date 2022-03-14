@@ -25,7 +25,7 @@ def count(data_dict_list: List[dict]):
         else:
             output[data_dict_list[i]['name']] = 1
 
-    return(output)
+    print(output)
 
 
 
@@ -50,10 +50,10 @@ def main():
         data_object['value'] = a_var
         data_dict_list.append(data_object)
 
-    return(count(data_dict_list))
+    count(data_dict_list)
 
     
 
 
 if __name__ == '__main__':
-    print(main())
+    main()
