@@ -1,4 +1,5 @@
 from typing import List
+import pprint
 
 
 def clean_data(drive_list: List[dict]):
@@ -25,11 +26,12 @@ def clean_data(drive_list: List[dict]):
         if drive_list[i]['type'] == 'SATA':
             if not drive_list[i].get('speed'):
                 drive_list[i]['speed'] = 5200
-        if drive_list[i]['type'] == 'Fibre':
-            drive_list[i]['ty]e'] = 'Fiber'
-        # ASSUMPTION: Slot shows an error in drive size. Since 1000 GiB are
-        # Used, assume that size_GiB is also 1000 GiB (b/c drive size cannot 
-        # be 0)
+        if drive_list[i]['type'] == 'Fiber':
+            drive_list[i]['type'] = 'Fibre'
+        # ASSUMPTION: Slot 4 shows an error in drive size. Since 1000 GiB are
+        # Used, assume that size_GiB is equal to used GiB (b/c drive size cannot 
+        # be 0) - apply this logic to other similar errors, do not hard code
+        # for slot 4 only
         if drive_list[i]['size_GiB'] == 0:
             drive_list[i]['size_GiB'] = drive_list[i]['used_GiB']
 
@@ -37,6 +39,9 @@ def clean_data(drive_list: List[dict]):
         drive_list[i]['free_GiB'] = drive_list[i]['size_GiB'] - drive_list[i]['used_GiB']
         drive_list[i]['free_percent'] = drive_list[i]['free_GiB']/drive_list[i]['size_GiB']
     
+    pp = pprint.PrettyPrinter(indent=1, sort_dicts=False)
+    pp.pprint(drive_list)
+
     return drive_list
 
 
@@ -63,7 +68,7 @@ def print_summary(drive_list: List[dict]):
     weighted_average_latency = 0.0
 
     for i in range(len(drive_list)):
-        if drive_list[i]['type'] == 'Fiber' or drive_list[i]['type'] == 'Fibre':
+        if drive_list[i]['type'] == 'Fibre':
             fibre_drive_count += 1
         if drive_list[i]['type'] == 'SSD':
             # Despite  not being explicitly named SSD, SAS is a type of solid
@@ -154,7 +159,6 @@ def main():
 
 
     clean_data(drive_list)
-    print(drive_list)
     print_summary(drive_list)
 
 
