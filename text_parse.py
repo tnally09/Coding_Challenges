@@ -56,8 +56,9 @@ def main():
     search_pattern = re.compile(r"(\S+)")
 
     # Though the formatting of text_to_parse data above is formatted to
-    # Show a "line" of data - each of those "lines" is composed of five
-    # List indices, therefore increment the for loop search by five each time
+    # Show a "line" of data - each of those "lines" is composed of a
+    # List index. Five "lines" makes up one stream of data, therefore 
+    # Increment the for loop search by five each time
     for i in range(0, len(text_to_parse), 5):
         # Find all numbers in the first "line"
         numbers = re.findall(search_pattern, text_to_parse[i])
@@ -75,7 +76,7 @@ def main():
             port_data.append(temp_idx)
 
     # PrettyPrint not necessary, but provides cleaner output 
-    # For human comparison
+    # For human digestion
     pp = pprint.PrettyPrinter(indent=1, sort_dicts=False)
     pp.pprint(port_data)
 
